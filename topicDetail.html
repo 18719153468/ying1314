@@ -1,0 +1,754 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>职前公社</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.css">
+    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/zepto.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.js"></script>
+    <script typet="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+<style>
+    .bg{
+        background-color:rgba(235,230,230,1.00);
+        opacity:0.9;
+        border-radius: 10px;
+        padding: 10px;
+    }
+    .page-comment>main {
+        background:#fff
+    }
+    .page-comment .user-wrap {
+        position: relative;
+        min-height: 3rem;
+    }
+    .page-comment .userinfo {
+        position: absolute;
+        bottom: -.4rem;
+        right: .2rem;
+    }
+    .page-comment .userface {
+        width: 1.2rem;
+        height: 1.2rem;
+        overflow: hidden;
+        border-radius: .1rem;
+    }
+    .page-comment .nickname {
+        color: #fff;
+        padding: .1rem .2rem;
+        font-size: .36rem;
+    }
+    .page-comment .comment-box {
+        padding-top: .5rem;
+    }
+    .page-comment .item-title {
+        margin-bottom:0;
+        color:#333
+    }
+    .page-comment .bui-list .span1>.bui-box {
+        margin-bottom:.2rem
+    }
+    .page-comment .bui-input input {
+        background:#F3F5F8;
+        border-radius:.1rem;
+        padding-left:.2rem;
+        height:.8rem
+    }
+
+    .comment-line {
+        padding:.2rem
+    }
+    .comment-line .thumbnail {
+        width:.7rem;
+        height:.7rem;
+        border-radius: .1rem;
+        overflow: hidden;
+        margin-right:.2rem
+    }
+    .comment-line .item-title {
+        margin-bottom:.2rem;
+        color:#6685B0;
+        font-size:.28rem
+    }
+    .comment-line .bui-rating .bui-rating-cell {
+        margin-left:0;
+        margin-right:0
+    }
+    .comment-line .bui-rating .bui-rating-cell:before {
+        font-size:.4rem
+    }
+    .comment-line .time {
+        display:inline-block;
+        height:.7rem;
+        line-height:.7rem
+    }
+    .comment-content {
+        -webkit-line-clamp:3;
+        color:#333
+    }
+    .comment-content.comment-content.autoheight {
+        -webkit-line-clamp:inherit
+    }
+    .question .comment-content {
+        margin-bottom:0
+    }
+    .bui-btn-toggle {
+        text-align:left;
+        display:inline-block;
+        border:0;
+        padding-left:0;
+        max-height:1rem;
+        color:#39a4ff
+    }
+    .bui-btn-toggle: {
+        background:none;
+        color:#39a4ff
+    }
+    .comment-reply {
+        margin-left:.9rem;
+        background:#f4f6f9;
+        padding:.15rem;
+        font-size:.22rem;
+        color:#333
+    }
+    .comment-reply li {
+        margin-bottom:.1rem
+    }
+    .comment-reply em {
+        font-style:normal;
+        color:#61749B
+    }
+
+    .dropdown-comment {
+        padding: 0;
+        padding-left: .2rem;
+        padding-right: .2rem;
+        border: 0;
+    }
+
+    .dropdown-comment >.bui-list {
+        width: 2.1rem;
+        text-align: right;
+        top: -.1rem;
+    }
+    .dropdown-comment >.bui-list {
+        display: inline-block;
+        background: #4c5154;
+        color: #fff;
+        margin: 0;
+        font-size: .22rem;
+        border: 0;
+    }
+    @charset "utf-8";
+
+    .comments-panel {
+        border:0;
+        background:#f6f6f6;
+    .bui-panel-main ,
+    .bui-panel-head {
+        border:0;
+    }
+    .bui-panel-head {
+    span {
+        display:inline-block;
+        padding:.05rem .1rem;
+        background:$primary-color;
+    @include round();
+        color:#fff;
+    }
+    }
+    .bui-panel-main {
+    }
+
+    .bui-list {
+    .bui-btn {
+        background:#f6f6f6;
+        border-bottom:1px solid #eee;
+        padding-top:.2rem;
+        padding-bottom:.2rem;
+
+    .thumbnail {
+        width:.46rem;
+        height:.46rem;
+    @include round(50%);
+        overflow:hidden;
+    }
+    .name {
+        color:#228ae6;
+        font-size:.22rem;
+    }
+    .item-text {
+        margin-bottom:.2rem;
+    }
+    .area {
+        margin-right:.1rem;
+        color:#a8a8a8;
+    }
+    .time {
+        color:#a8a8a8;
+    }
+    .item-content {
+        font-size:.24rem;
+        line-height:1.5;
+        color:#333;
+    }
+    }
+    }
+
+    .digg {
+        color:#cfcfcf;
+        font-size:.16rem;
+    img {
+        width:.24rem;
+    }
+    }
+    }
+    .h{
+        margin-top:10px;
+    }
+    .position{
+        margin-left: 25px;
+    }
+    .forn{
+        font-size: 10px;
+    }
+	.like1{ font-size:15px;  color:#ccc; cursor:pointer;}
+    .cs{color:#f00;}
+</style>
+<div class="bui-page page-comment">
+
+    <header class="bui-bar">
+        <div class="bui-bar-left">
+            <!-- 左边有图标示例 -->
+            <div class="bui-btn btn-back" onclick="bui.back();"><i class="icon-back"></i></div>
+        </div>
+        <div class="bui-bar-main">职前公社</div>
+        <div class="bui-bar-right bui-bar-text"></div>
+    </header>
+
+
+    <main>
+        <div class="comment-box">
+            <!-- 评论 -->
+            <div class="comment-line"id="topic">
+
+
+
+
+            </div>
+            <hr>
+            <!-- 回复 -->
+            <ul class="bui-list" id="reply">
+
+            </ul>
+        </div>
+    </main>
+    <div class="container-xy comment-post" style="display:none;">
+        <div class="input-wrap">
+            <div class="bui-input comment-input">
+                <input type="text" value="" placeholder="说说你的看法">
+                <div class="bui-btn">发表</div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <!-- tab菜单结构 -->
+        <ul id="tabDynamicNav" class="bui-nav">
+            <li class="bui-btn bui-box-vertical" href="http://localhost:8080/vio_war/page/in.html"><i class="icon-chat"></i>
+                <div class="span1">招聘</div>
+            </li>
+            <li class="bui-btn bui-box-vertical"  href="http://localhost:8080/vio_war/page/rent.html"><i class="icon-face"></i>
+                <div class="span1">求租</div>
+            </li>
+            <li class="bui-btn bui-box-vertical" href="http://localhost:8080/vio_war/page/house.html"><i class="icon-home"></i>
+                <div class="span1">房源</div>
+            </li>
+
+            <li class="bui-btn bui-box-vertical active" href="http://localhost:8080/vio_war/page/topic.html"><i class="icon-edit"></i>
+                <div class="span1">社区</div>
+            </li>
+
+            <li class="bui-btn bui-box-vertical" href="http://localhost:8080/vio_war/page/personal.html"><i class="icon-setting"></i>
+                <div class="span1">我的</div>
+            </li>
+        </ul>
+    </footer>
+</div>
+
+<script>/**
+ * 搜索列表页模板
+ * 默认模块名: pages/searchbar/searchbar
+ * @return {[object]}  [ 返回一个对象 ]
+ */
+
+
+
+bui.ready(function(){
+
+    //获取url上的目标id
+    var getParams = bui.getPageParams();
+    var resultId;
+    getParams.done(function(result){
+        console.log(result);
+        resultId=result.id;
+    })
+
+
+    var pageview = {};
+
+    pageview.init = function () {
+			    var data ={
+    "code": 200,
+    "message": "请求成功",
+    "data": {
+        "topicId": "6",
+        "userVo": {
+            "userId": "8e34ab525497494e8cfddbf4c6f11f46",
+            "nickName": "热水养鲨鱼",
+            "sex": 0,
+            "company": null,
+            "imgAddr": "https://avatars3.githubusercontent.com/u/49364675?v=4",
+            "school": null
+        },
+        "type": 1,
+        "resumeImg": null,
+        "content": "我是热水创建的话题",
+        "createTime": 1566201834000,
+        "collectNum": 0,
+        "likeNum": 0,
+        "commentNum": 4,
+        "fatherReplyList": [
+            {
+                "fatherReplyId": "be9618f5b0b944a8bb01de872859ce75",
+                "topicId": "6",
+                "userVo": {
+                    "userId": "8e34ab525497494e8cfddbf4c6f11f46",
+                    "nickName": "热水养鲨鱼",
+                    "sex": 0,
+                    "company": null,
+                    "imgAddr": "https://avatars3.githubusercontent.com/u/49364675?v=4",
+                    "school": null
+                },
+                "toUserId": "8e34ab525497494e8cfddbf4c6f11f46",
+                "content": "tttttttttt",
+                "createTime": 1566299429000,
+                "likeNum": 0,
+                "sonReplyList": [
+                    {
+                        "sonReplyId": "ebac1f93865a4ac8860b29651117059a",
+                        "topicId": "6",
+                        "userVo": {
+                            "userId": "8e34ab525497494e8cfddbf4c6f11f46",
+                            "nickName": "热水养鲨鱼",
+                            "sex": 0,
+                            "company": null,
+                            "imgAddr": "https://avatars3.githubusercontent.com/u/49364675?v=4",
+                            "school": null
+                        },
+                        "fatherReplyId": "be9618f5b0b944a8bb01de872859ce75",
+                        "toUserId": "8e34ab525497494e8cfddbf4c6f11f46",
+                        "content": "sonsonsons",
+                        "createTime": 1566299565000,
+                        "likeNum": 0
+                    },
+                    {
+                        "sonReplyId": "ebac1f93865a4ac8860b29651117",
+                        "topicId": "6",
+                        "userVo": {
+                            "userId": "8e34ab525497494e8cfddbf4c6f11f46",
+                            "nickName": "热水养鲨鱼",
+                            "sex": 0,
+                            "company": null,
+                            "imgAddr": "https://avatars3.githubusercontent.com/u/49364675?v=4",
+                            "school": null
+                        },
+                        "fatherReplyId": "be9618f5b0b944a8bb01de872859ce75",
+                        "toUserId": "8e34ab525497494e8cfddbf4c6f11f46",
+                        "content": "sonsonsons",
+                        "createTime": 1566299565000,
+                        "likeNum": 0
+                    }
+                ]
+            },
+            {
+                "fatherReplyId": "254b36f5c628475ab3e3958ef037002c",
+                "topicId": "6",
+                "userVo": {
+                    "userId": "8e34ab525497494e8cfddbf4c6f11f46",
+                    "nickName": "热水养鲨鱼",
+                    "sex": 0,
+                    "company": null,
+                    "imgAddr": "https://avatars3.githubusercontent.com/u/49364675?v=4",
+                    "school": null
+                },
+                "toUserId": "8e34ab525497494e8cfddbf4c6f11f46",
+                "content": "热水回复自己话题的父评论",
+                "createTime": 1566202065000,
+                "likeNum": 0,
+                "sonReplyList":[
+                    {
+                        "sonReplyId": "ebac1f93865a4ac8860b",
+                        "topicId": "6",
+                        "userVo": {
+                            "userId": "8e34ab525497494e8cfddbf4c6f11f46",
+                            "nickName": "热水养鲨鱼",
+                            "sex": 0,
+                            "company": null,
+                            "imgAddr": "https://avatars3.githubusercontent.com/u/49364675?v=4",
+                            "school": null
+                        },
+                        "fatherReplyId": "be9618f5b0b944a8bb01de872859ce75",
+                        "toUserId": "8e34ab525497494e8cfddbf4c6f11f46",
+                        "content": "sonsonsons",
+                        "createTime": 1566299565000,
+                        "likeNum": 0
+                    },
+                    {
+                        "sonReplyId": "ebac1f93865a4ac8860b2965111",
+                        "topicId": "6",
+                        "userVo": {
+                            "userId": "8e34ab525497494e8cfddbf4c6f11f46",
+                            "nickName": "热水养鲨鱼",
+                            "sex": 0,
+                            "company": null,
+                            "imgAddr": "https://avatars3.githubusercontent.com/u/49364675?v=4",
+                            "school": null
+                        },
+                        "fatherReplyId": "be9618f5b0b944a8bb01de872859ce75",
+                        "toUserId": "8e34ab525497494e8cfddbf4c6f11f46",
+                        "content": "sonsonsons",
+                        "createTime": 1566299565000,
+                        "likeNum": 0
+                    }
+                ]
+            }
+        ]
+    }
+}
+            console.log(data.data);
+            handleUser(data.data);
+		
+		/*
+        bui.ajax({
+            url: "http://172.23.196.116:8080/vio_war/topic/get/topic/"+1,
+        }).then(function(res){
+            console.log(res.data);
+            handleUser(res.data);
+        },function(res,status){
+            console.log(status);
+
+        })*/
+
+
+    }
+
+    function handleUser(data) {
+
+        var html="";
+        html += `
+                <input type="hidden" id="topicId" value="${data.topicId}" />
+                <input type="hidden" id="topicUser" value="${data.userVo.userId}" />
+               	 <div class="bui-box">
+                    <div class="thumbnail" id="logo"><img src="${data.userVo.imgAddr}"></div>
+                    <div class="span1">
+                        <div class="bui-box">
+                            <div class="span1">
+                                <h3 id="name" class="item-title">${data.userVo.nickName}</h3>
+                            </div>
+                        </div>
+
+												<!-- 内容 -->
+                        <div class="item-text comment-content" id="content">${data.content}</div>
+
+
+                        <div class="bui-box">
+                           <span class="time" id="createTime">${data.createTime}</span>
+                            </div>
+                            <div class="bui-box">
+                               <div class="span1" id="like" onclick="topicLike()"><i class="icon-dout like1">&#10084;</i>
+                                <i id="good1">${data.likeNum}</i></div>
+                              <div class="span1" id="comment"  onclick="topicComment()"><i class="icon-dout">&#xe678;<i id="commentNum">${data.commentNum}</i></i></div>
+                              <div class="span1" id="collect" onclick="collect()"><i class="icon-dout like1">&#xe62a;</i>
+                              <i id="good3">${data.collectNum}</i></div>
+                            </div>
+                        </div>
+              </div>
+            `;
+        $("#topic").html(html);
+
+
+        var html1="";
+        $.map(data.fatherReplyList,function(el, index) {
+            //绑上按钮事件点赞 评论还有父评论id  父评论按钮事件对应父评论接口
+
+            html1 += `
+                <input type="hidden" id="comment${el.fatherReplyId}" value="${el.userVo.userId}" fla1="0" />
+               <li class="bui-btn bui-box-align-top">
+                                <div class="thumbnail"><img src="${el.userVo.imgAddr}" alt="" style="height:20px;width:20px;border-radius:0.5;"></div>
+                                <div class="span1">
+                                    <div class="item-title"><span class="name h forn" style="">${el.userVo.nickName}</span><span class="digg bui-right"><i id="id${el.fatherReplyId}">${el.likeNum}</i> <i class="icons"><i class="icon-dout like1" id="fatherReply,${el.fatherReplyId}" onclick="replyLike(this.id)">&#10084;</i></i></span></div>
+                                    <div class="item-content h bg" id="${el.fatherReplyId}" onclick="sonComment(this.id)">
+                                        ${el.content}
+                                    </div>
+                                </div>
+                            </li>
+            `;
+            console.log("father:"+el.content);
+            $.map(el.sonReplyList,function(el, index) {
+                //绑上按钮事件点赞 评论还有子评论id  子评论按钮事件对应子评论接口
+
+                html1 += `
+                <input type="hidden" id="comment${el.sonReplyId}" value="${el.userVo.userId}" fla="0" />
+               <li class="bui-btn bui-box-align-top position">
+                                <div class="thumbnail"><img src="${el.userVo.imgAddr}" alt="" style="height:20px;width:20px;border-radius:0.5;"></div>
+                                <div class="span1">
+                                    <em class="item-title"><span class="name h forn" style="">${el.userVo.nickName}</span><span class="digg bui-right"><i id="id1${el.sonReplyId}">${el.likeNum}</i> <i class="icons"><i class="icon-dout like1" id="sonReply,${el.sonReplyId}" onclick="like(this.id)">&#10084;</i></i></span></em>
+                                    <div class="item-content h bg" id="${el.sonReplyId}" onclick="sonComment(this.id)">
+                                       回复:${el.content}
+                                    </div>
+                                </div>
+                            </li>
+            `;
+                console.log("son:"+el.content);
+            });
+        });
+        $("#reply").html(html1);
+    }
+
+    $('#btnBottom').on("click",function  (argument) {
+        bui.alert({"id":"可以显示对象"});
+    })
+
+    pageview.init();
+    bui.btn({
+        id:"#page",
+        handle: ".bui-btn"  // 绑定多个 ".bui-btn,.submit,a"
+    }).load();
+    return pageview;
+})
+
+    function sonComment(Id)
+    {
+        var topicId=$("#topicId").val();
+        var fatherReplyId=Id;
+       // var sonReplyId=$("#topicUser").val();
+        var toUserId=$("#comment"+Id).val();
+        console.log(topicId+" "+fatherReplyId+" "+toUserId);
+        var uiPrompt = bui.prompt("请输入您要回复的评论",function(e){
+            var text = $(e.target).text();
+            if( text == "取消"){
+                this.close();
+            }else{
+                if( this.value() ){
+                    var content=this.value();
+                    bui.ajax({
+                        url: "http://172.23.196.116:8080/vio_war/comment/add/son",
+                        method:"POST",
+                        data: {
+                            "topicId":topicId,
+                            "fatherReplyId":fatherReplyId,
+                           // "sonReplyId":sonReplyId,
+                            "toUserId":toUserId,
+                            "content":content,
+                        }
+                    }).then(function(res){
+                        console.log(res)
+                    },function(res,status){
+
+                    })
+
+                    bui.hint("评论成功");
+                    this.close();
+                }else{
+                    bui.hint("评论不能为空");
+                }
+            }
+        })
+
+    }
+
+
+
+    function topicComment()
+    {
+        var topicId=$("#topicId").val();
+        var toUserId=$("#topicUser").val();
+
+        console.log(topicId+" "+toUserId);
+        var uiPrompt = bui.prompt("请输入您的评论",function(e){
+            var text = $(e.target).text();
+            if( text == "取消"){
+                this.close();
+            }else{
+                if( this.value() ){
+                    var content=this.value();
+                    bui.ajax({
+                        url: "http://172.23.196.116:8080/vio_war/comment/add/father",
+                        method:"POST",
+                        data: {
+                            "topicId":topicId,
+                            "toUserId":toUserId,
+                            "content":content,
+                        }
+                    }).then(function(res){
+                        console.log("成功评论"+topicId)
+                        bui.alert("评论"+res.message);
+                    },function(res,status){
+
+                    })
+
+                    bui.hint("评论成功");
+                    this.close();
+                }else{
+                    bui.hint("评论不能为空");
+                }
+            }
+        })
+
+    }
+
+
+	
+	 var flag=false;
+	var flag1=false;
+    function topicLike()
+    {
+      /*  alert("点赞");*/
+      /*  var topicUserId = $("#comment").val();
+        var topicUserId = $("#comment").val();
+        bui.ajax({
+            url: "http://localhost:8080/vio_war/like/topic",
+            method:"POST",
+            data: {
+                "likedTopicId":topicId,
+                "toUserId":topicUserId
+            }
+        }).then(function(res){
+            console.log(res)
+        },function(res,status){
+
+        })
+		*/
+		//点赞、取消点赞
+		 var good2 = document.getElementById("good1").textContent;
+		  if(flag==false){
+               good2 = parseInt(good2) + 1;
+               flag=true;
+            }
+			else{
+				good2 = parseInt(good2) - 1;
+				flag=false;
+			}   
+           document.getElementById("good1").innerText = good2; 
+		
+		 
+    }
+
+    function replyLike(father)
+    {
+        var strs= new Array(); //定义一数组
+        strs=father.split(",");
+        //获取url上的目标id
+        var fatherReplyId =strs[1];
+
+
+        var topicId = $("#topicId").val();
+        var commentUserId = $("#comment"+fatherReplyId).val();
+
+        bui.ajax({
+            url: "http://172.23.196.116:8080/vio_war/like/reply",
+            method:"POST",
+            data: {
+                "topicId":topicId,
+                "likedFatherReplyId":fatherReplyId,
+                "toUserId":commentUserId
+            }
+        }).then(function(res){
+            console.log(res)
+        },function(res,status){
+
+        })
+		
+		//点赞、取消点赞
+		var flag1=$("#comment"+fatherReplyId).attr("fla1");
+		flag1=Number(flag1);
+		 var good2 = document.getElementById("id"+fatherReplyId).textContent;
+		 var nv = document.getElementById("comment"+fatherReplyId);  
+		  if(flag1==0){
+               good2 = parseInt(good2) + 1;
+               nv.setAttribute("fla1","1"); 
+            }
+			else{
+				good2 = parseInt(good2) - 1;
+				nv.setAttribute("fla1","0");
+			}   
+           document.getElementById("id"+fatherReplyId).innerText = good2; 
+    }
+
+     //子评论点赞
+	 function like(son)
+    {
+        var strs= new Array(); //定义一数组
+        strs=son.split(",");
+        //获取url上的目标id
+        var sonReplyId =strs[1];
+
+
+        
+		
+		//点赞、取消点赞
+		 var flag1=$("#comment"+sonReplyId).attr("fla");
+		flag1=Number(flag1);
+		 var good2 = document.getElementById("id1"+sonReplyId).textContent;
+		 var nv = document.getElementById("comment"+sonReplyId);  
+		  if(flag1==0){
+               good2 = parseInt(good2) + 1;
+               nv.setAttribute("fla","1"); 
+            }
+			else{
+				good2 = parseInt(good2) - 1;
+				nv.setAttribute("fla","0");
+			}   
+           document.getElementById("id1"+sonReplyId).innerText = good2; 
+    }
+	
+    function collect()
+    {
+        var topicId = $("#topicId").val();
+
+        bui.ajax({
+            url: "http://172.23.196.116:8080/vio_war/collection/add/topic/"+topicId,
+            method:"GET"
+
+        }).then(function(res){
+            console.log(res.message)
+        },function(res,status){
+            console.log(res.message)
+        })
+    /*    bui.alert("收藏");*/
+		
+		//点赞、取消点赞
+		 var good2 = document.getElementById("good3").textContent;
+		  if(flag1==false){
+               good2 = parseInt(good2) + 1;
+               flag1=true;
+            }
+			else{
+				good2 = parseInt(good2) - 1;
+				flag1=false;
+			}   
+           document.getElementById("good3").innerText = good2;        
+    }
+</script>
+ <script typet="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+  <script>
+      $(function () {            
+         $(".like1").click(function () {
+            $(this).toggleClass('cs');                
+         })
+       })
+ </script>
+</body>
+</html>

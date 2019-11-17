@@ -1,0 +1,516 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>职前公社</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.css">
+	<script src="https://cdn.jsdelivr.net/npm/buijs/lib/zepto.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.js"></script>
+	<style></style>
+</head>
+<body>
+<style>
+	.bui-dialog-foot-nav {
+		bottom: 1rem;
+		display: none;
+	}
+
+
+	.publish-mark {
+		position:fixed;
+		right: 20px;
+		bottom: 60px;
+		width: 60px;
+		height: 60px;
+		line-height: .8rem;
+		text-align: center;
+		background-color: #26d76d;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+	}
+
+	.publish-mark i {
+		font-size: .36rem;
+		text-align: center;
+		color: #fff;
+	}
+
+
+	<!--卡片模块css-->
+		.page-comment>main {
+			background:#fff
+		}
+	.page-comment .user-wrap {
+		position: relative;
+		min-height: 3rem;
+	}
+	.page-comment .userinfo {
+		position: absolute;
+		bottom: -.4rem;
+		right: .2rem;
+	}
+	.page-comment .userface {
+		width: 1.2rem;
+		height: 1.2rem;
+		overflow: hidden;
+		border-radius: .1rem;
+	}
+	.page-comment .nickname {
+		color: #fff;
+		padding: .1rem .2rem;
+		font-size: .36rem;
+	}
+	.page-comment .comment-box {
+		padding-top: .5rem;
+	}
+	.page-comment .item-title {
+		margin-bottom:0;
+		color:#333
+	}
+	.page-comment .bui-list .span1>.bui-box {
+		margin-bottom:.2rem
+	}
+	.page-comment footer {
+		background:#fff;
+		height:1.3rem
+	}
+	.page-comment footer .bui-input input {
+		background:#F3F5F8;
+		border-radius:.1rem;
+		padding-left:.2rem;
+		height:.8rem
+	}
+	.page-comment footer .bui-btn {
+		color:#39a4ff;
+		border:0
+	}
+	.page-comment footer .bui-btn:active {
+		background:none
+	}
+	.comment-line {
+		padding:.2rem
+	}
+	.comment-line .thumbnail {
+		width:.7rem;
+		height:.7rem;
+		border-radius: .1rem;
+		overflow: hidden;
+		margin-right:.2rem
+	}
+	.comment-line .item-title {
+		margin-bottom:.2rem;
+		color:#6685B0;
+		font-size:.28rem
+	}
+	.comment-line .bui-rating .bui-rating-cell {
+		margin-left:0;
+		margin-right:0
+	}
+	.comment-line .bui-rating .bui-rating-cell:before {
+		font-size:.4rem
+	}
+	.comment-line .time {
+		display:inline-block;
+		height:.7rem;
+		line-height:.7rem
+	}
+	.comment-content {
+		-webkit-line-clamp:3;
+		color:#333
+	}
+	.comment-content.active,.comment-content.autoheight {
+		-webkit-line-clamp:inherit
+	}
+	.question .comment-content {
+		margin-bottom:0
+	}
+	.bui-btn-toggle {
+		text-align:left;
+		display:inline-block;
+		border:0;
+		padding-left:0;
+		max-height:1rem;
+		color:#39a4ff
+	}
+	.bui-btn-toggle:active {
+		background:none;
+		color:#39a4ff
+	}
+	.comment-reply {
+		margin-left:.9rem;
+		background:#f4f6f9;
+		padding:.15rem;
+		font-size:.22rem;
+		color:#333
+	}
+	.comment-reply li {
+		margin-bottom:.1rem
+	}
+	.comment-reply em {
+		font-style:normal;
+		color:#61749B
+	}
+
+	.dropdown-comment  >.bui-btn {
+		padding: 0;
+		padding-left: .2rem;
+		padding-right: .2rem;
+		border: 0;
+	}
+	.dropdown-comment  >.bui-btn:active,
+	.dropdown-comment  >.bui-btn.active {
+		background: none;
+	}
+	.dropdown-comment >.bui-list {
+		width: 2.1rem;
+		text-align: right;
+		top: -.1rem;
+	}
+	.dropdown-comment >.bui-list .bui-btn {
+		display: inline-block;
+		background: #4c5154;
+		color: #fff;
+		margin: 0;
+		font-size: .22rem;
+		border: 0;
+	}
+	.dropdown-comment >.bui-list .bui-btn:first-child {
+		border-radius: .1rem 0 0 .1rem;
+	}
+	.dropdown-comment >.bui-list .bui-btn:last-child {
+		border-radius: 0 .1rem .1rem 0;
+	}
+	.dropdown-comment >.bui-list .bui-btn:only-child {
+		border-radius: .1rem;
+	}
+	.dropdown-comment >.bui-list .bui-btn:active,
+	.dropdown-comment >.bui-list .bui-btn.active {
+		background: #4c5154;
+		color: #fff;
+	}
+	.dropdown-comment >.bui-list .bui-btn  img {
+		height: .4rem;
+	}
+	.dropdown-comment .icon-comment {
+		font-size: .4rem;
+		color: #889dc4;
+	}
+
+	.dialog-slide .bui-dialog-main,
+	.bui-dialog-fullscreen {
+		background: none;
+	}
+	.bui-slide-fullscreen {
+		background: rgba(0,0,0,0.7);
+	}
+
+	.dialog-slide img {
+
+	}
+
+	.slide-img {
+		width: 100%;
+		height: 100%;
+		background-position: center;
+		background-size: contain;
+		background-repeat: no-repeat;
+	}
+
+	.bui-bar .bui-bar-text {
+		width: 2rem;
+	}
+	.blue{
+		color: mediumblue;
+	}
+	a:hover{
+		font-weight: bold;
+		color: mediumblue;
+	}
+	.bg{
+		background-color:rgba(235,230,230,1.00);
+		opacity:0.9;
+		border-radius: 10px;
+		padding: 10px;
+	}
+</style>
+
+<div class="bui-page" id="page">
+	<header>
+		<div class="bui-bar">
+			<div class="bui-bar-left">
+				<a class="bui-btn btn-back" onclick="bui.back();"><i class="icon-back"></i></a>
+			</div>
+			<div class="bui-bar-main">消息管理</div>
+			<div class="bui-bar-right">
+			</div>
+		</div>
+	</header>
+
+
+
+	<main>
+
+		<!--顶部导航动态加载-->
+		<div id="tabDynamic" class="bui-tab">
+			<div class="bui-tab-head">
+				<ul class="bui-nav">
+					<li class="bui-btn" >评论</li>
+					<li class="bui-btn" >点赞</li>
+				</ul>
+			</div>
+			<div class="bui-tab-main">
+				<ul>
+					<li>
+						<div id="scrollList" class="bui-scroll">
+							<div class="bui-scroll-head"></div>
+							<div class="bui-scroll-main">
+								<ul class="bui-list bui-list-thumbnail">
+								</ul>
+							</div>
+							<div class="bui-scroll-foot"></div>
+						</div>
+
+					</li>
+
+					<li>
+
+						<div id="scrollList1" class="bui-scroll">
+							<div class="bui-scroll-head"></div>
+							<div class="bui-scroll-main">
+								<ul class="bui-list bui-list-thumbnail">
+								</ul>
+							</div>
+							<div class="bui-scroll-foot"></div>
+						</div>
+
+					</li>
+				</ul>
+
+			</div>
+		</div>
+	</main>
+	<footer>
+
+
+
+
+		<!-- tab菜单结构 -->
+		<ul id="tabDynamicNav" class="bui-nav">
+			<li class="bui-btn bui-box-vertical" href="http://localhost:8080/vio_war/page/in.html"><i class="icon-chat"></span></i>
+				<div class="span1">招聘</div>
+			</li>
+			<li class="bui-btn bui-box-vertical" href="http://localhost:8080/vio_war/page/rent.html"><i class="icon-face"></span></i>
+				<div class="span1">求租</div>
+			</li>
+			<li class="bui-btn bui-box-vertical" href="http://localhost:8080/vio_war/page/house.html"><i class="icon-home"></span></i>
+				<div class="span1">房源</div>
+			</li>
+
+			<li class="bui-btn bui-box-vertical" href="http://localhost:8080/vio_war/page/topic.html"><i class="icon-edit"></i>
+				<div class="span1">社区</div>
+			</li>
+
+			<li class="bui-btn bui-box-vertical  active" href="http://localhost:8080/vio_war/page/personal.html"><i class="icon-setting"></i>
+				<div class="span1">我的</div>
+			</li>
+		</ul>
+	</footer>
+</div>
+<script>
+
+	//评论页面
+	//职言
+	bui.ready(function(){
+
+
+		var uiList = bui.list({
+			id: "#scrollList",
+			url: "http://localhost:8080/vio_war/notification/reply",
+			pageSize: 6, // 当pageSize 小于返回的数据大小的时候,则认为是最后一页,接口返回的数据最好能返回空数组,而不是null
+			data: {},
+			//如果分页的字段名不一样,通过field重新定义
+			field: {
+				page: "page",
+				size: "pageSize",
+				data: "data"
+			},
+			callback: function(e) {
+				// e.target 为你当前点击的元素
+				// e.currentTarget 为你当前点击的handle 整行
+			},
+
+
+			template: function(data) {
+				var html = "";
+				data.forEach(function(el, index) {
+
+					var sub='';
+					switch (el.notificationType) {
+						case 3:
+							html += `<li class="bui-btn bui-box" href="topicDetail.html?id=${el.topicId}">
+                                <div class="span1">
+                                  <p><a class="blue">@${el.fromNickName}</a>回复了你的评论：${el.sonReplyContent}</p>
+                                  <p class="bg">${el.toNickName}：${el.fatherReplyContent}</p>
+                                </div>
+                                    </li>
+                                <div class="bui-box">
+                                <div class="span1">
+                                   <span class="time">${el.createTime}</span>
+                                </div>
+
+                                </div>
+                                 <hr>`
+							break;
+						case 2:
+							html += `<li class="bui-btn bui-box" href="topicDetail.html?id=${el.topicId}">
+                                <div class="span1">
+                                  <p><a class="blue">@${el.fromNickName}</a>评论了你的职言：${el.topicContent}</p>
+                                  <p class="bg">${el.toNickName}：${el.fatherReplyContent}</p>
+                                </div>
+                                    </li>
+                                <div class="bui-box">
+                                <div class="span1">
+                                   <span class="time">${el.createTime}</span>
+                                </div>
+
+                                </div>
+                                 <hr>`
+							break;
+					}
+
+
+				});
+				return html;
+			},
+			onBeforeRefresh: function() {
+				console.log("brefore refresh")
+			},
+			onBeforeLoad: function() {
+				console.log("brefore load")
+			},
+			onRefresh: function() {
+				// 刷新以后执行
+				console.log("refreshed")
+			},
+			onLoad: function() {
+				// 刷新以后执行
+				console.log("loaded")
+			}
+		})
+
+
+
+
+		var uiList = bui.list({
+			id: "#scrollList1",
+			url: "http://localhost:8080/vio_war/notification/like",
+			pageSize: 6, // 当pageSize 小于返回的数据大小的时候,则认为是最后一页,接口返回的数据最好能返回空数组,而不是null
+			data: {},
+			//如果分页的字段名不一样,通过field重新定义
+			field: {
+				page: "page",
+				size: "pageSize",
+				data: "data"
+			},
+			callback: function(e) {
+				// e.target 为你当前点击的元素
+				// e.currentTarget 为你当前点击的handle 整行
+			},
+
+
+			template: function(data) {
+				var html = "";
+				data.forEach(function(el, index) {
+
+
+					switch (el.notificationType) {
+						case 2:
+							html += `<li class="bui-btn bui-box" href="topicDetail.html?id=${el.topicId}">
+                                <div class="span1">
+                                  <p><a class="blue">@${el.fromNickName}</a>点赞了你的评论</p>
+                                  <p class="bg">${el.toNickName}：${el.fatherReplyContent}</p>
+                                </div>
+                                    </li>
+                                <div class="bui-box">
+                                <div class="span1">
+                                   <span class="time">${el.createTime}</span>
+                                </div>
+
+                                </div>
+                                 <hr>`
+
+							break;
+						case 1:
+							html += `<li class="bui-btn bui-box" href="topicDetail.html?id=${el.topicId}">
+                                <div class="span1">
+                                  <p><a class="blue">@${el.fromNickName}</a>点赞了你的职言</p>
+                                  <p class="bg">${el.toNickName}：${el.topicContent}</p>
+                                </div>
+                                    </li>
+                                <div class="bui-box">
+                                <div class="span1">
+                                   <span class="time">${el.createTime}</span>
+                                </div>
+
+                                </div>
+                                 <hr>`
+							break;
+					}
+
+				});
+				return html;
+			},
+			onBeforeRefresh: function() {
+				console.log("brefore refresh")
+			},
+			onBeforeLoad: function() {
+				console.log("brefore load")
+			},
+			onRefresh: function() {
+				// 刷新以后执行
+				console.log("refreshed")
+			},
+			onLoad: function() {
+				// 刷新以后执行
+				console.log("loaded")
+			}
+		})
+
+
+
+		//顶部导航加载
+		//按钮在tab外层,需要传id
+		var tab = bui.tab({
+			id: "#tabDynamic",
+			// 1: 声明是动态加载的tab
+			autoload: true,
+		})
+
+		// 2: 监听加载后的事件, load 只加载一次
+		tab.on("to", function(index) {
+			switch (index) {
+				case 0:
+
+					break;
+				case 1:
+					// 这里是加载脚本第一次的时候触发
+
+					break;
+			}
+		}).to(0)
+
+		bui.btn({
+			id:"#page",
+			handle: ".bui-btn,.submit"  /*绑定多个 ".bui-btn,.submit,a"*/
+		}).load();
+
+
+	})
+
+
+
+</script>
+</body>
+</html>
