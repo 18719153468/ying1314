@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>话题</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.css">
+    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/zepto.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.js"></script>
+    <style></style>
+</head>
+<body>
+<style>
+    .publish-mark {
+        position:fixed;
+        right: 20px;
+        bottom: 60px;
+        width: 60px;
+        height: 60px;
+        line-height: .8rem;
+        text-align: center;
+        background-color: #26d76d;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+    }
+
+    .publish-mark i {
+        font-size: .24rem;
+        text-align: center;
+        color: #fff;
+    }
+    .container-box {
+        background: #fff;
+    }
+</style>
+<div class="bui-page page-feedback" id="page">
+    <header class="bui-bar">
+        <div class="bui-bar-left">
+            <!-- 左边有图标示例 -->
+            <div class="bui-btn btn-back" onclick="bui.back();"><i class="icon-back"></i></div>
+        </div>
+        <div class="bui-bar-main">话题发表</div>
+        <div class="bui-bar-right">
+
+        </div>
+    </header>
+    <main>
+        <ul class="bui-list">
+            <li class="bui-btn clearactive">
+                <div id="feedback" class="bui-input">
+                    <textarea placeholder="请填写你想要发表的话题" id="content" cols="30" rows="10"></textarea>
+                </div>
+            </li>
+        </ul>
+
+        <div class="container-xy">
+            <div class="bui-btn primary-reverse mini ring info" id="btnSend">发表话题</div>
+        </div>
+    </main>
+    <footer>
+        <!-- tab菜单结构 -->
+        <ul id="tabDynamicNav" class="bui-nav">
+            <li class="bui-btn bui-box-vertical" href="http://localhost:8080/vio_war/page/in.html"><i class="icon-chat"></span></i>
+                <div class="span1">招聘</div>
+            </li>
+            <li class="bui-btn bui-box-vertical" href="http://localhost:8080/vio_war/page/rent.html"><i class="icon-face"></span></i>
+                <div class="span1">求租</div>
+            </li>
+            <li class="bui-btn bui-box-vertical" href="http://localhost:8080/vio_war/page/house.html"><i class="icon-home"></span></i>
+                <div class="span1">房源</div>
+            </li>
+
+            <li class="bui-btn bui-box-vertical   active" href="http://localhost:8080/vio_war/page/topic.html"><i class="icon-edit"></i>
+                <div class="span1">社区</div>
+            </li>
+
+            <li class="bui-btn bui-box-vertical " href="http://localhost:8080/vio_war/page/personal.html"><i class="icon-setting"></i>
+                <div class="span1">我的</div>
+            </li>
+        </ul>
+    </footer>
+</div>
+
+<script>/**
+ * 发布评论模块
+ * 默认模块名: pages/comment/comment
+ * @return {[object]}  [ 返回一个对象 ]
+ */
+bui.ready(function(){
+
+    var pageview = {};
+
+    // 模块初始化定义
+    pageview.init = function() {
+        // 长度限制
+        var comment = bui.input({
+            id: "#feedback",
+            target: "textarea",
+            showIcon: false,
+            maxLength: 500,
+            showLength: true
+        })
+
+    }
+
+    var $btnSend = $("#btnSend");
+    var timer = bui.timer({
+        onEnd: function() {
+            $btnSend.removeClass("disabled").text("发布吧");
+        },
+        onProcess: function(e) {
+            var valWithZero = e.count < 10 ? "0" + e.count : e.count;
+            $btnSend.text(valWithZero + "稍等一会再发布吧");
+        },
+        times: 360
+    });
+    $btnSend.on("click", function(argument) {
+        var hasDisabled = $(this).hasClass("disabled");
+        if (!hasDisabled) {
+            $(this).addClass("disabled")
+            bui.alert("话题发布成功")
+            timer.restart();
+        }
+        var content=$("#content").val();
+        var type=1;
+        bui.ajax({
+            url: "http://localhost:8080/vio_war/topic/add/topic",
+            method:"POST",
+            data: {
+                "content":content,
+                "type":type
+            }
+        }).then(function(res){
+            console.log(res)
+        },function(res,status){
+
+        })
+    })
+
+
+// 初始化
+pageview.init();
+    bui.btn({
+        id:"#page",
+        handle: ".bui-btn"  // 绑定多个 ".bui-btn,.submit,a"
+    }).load();
+// 输出模块
+return pageview;
+})
+
+</script>
+</body>
+</html>
